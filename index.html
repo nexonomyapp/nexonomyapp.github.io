@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore OpenStreetMap and collect the territorial assets that matter to your study.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Nexonomy | Map workspace</title>
+  <link rel="stylesheet" href="./vendor/leaflet.css">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <script src="./vendor/leaflet.js" defer></script>
+  <script src="./vendor/osmtogeojson.js" defer></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to map workspace</a>
+  <header class="top">
+    <div class="identity"><span class="brand">Nexonomy</span><span class="product">Map workspace</span></div>
+    <button id="account" class="account" type="button"><img src="./assets/circle-user.svg" alt=""> <span>Guest mode</span></button>
+  </header>
+  <main id="main">
+    <section class="intro" aria-labelledby="title">
+      <div>
+        <div class="eyebrow">Territorial inventory</div>
+        <h1 id="title">Explore the territory</h1>
+        <p>Pick features on the map and save the assets you want to study.</p>
+      </div>
+      <button id="starter" class="secondary starter" type="button"><img src="./assets/map-pin.svg" alt=""> Starter area: Paris</button>
+    </section>
+    <div class="workspace">
+      <section class="map-panel" aria-labelledby="map-title">
+        <div class="map-toolbar">
+          <div class="tool-left">
+            <h2 id="map-title">Map</h2>
+            <div class="filters" aria-label="Filter assets" role="group">
+              <button type="button" aria-pressed="true" data-kind="ALL">All<span class="wide-label"> assets</span></button>
+              <button type="button" aria-pressed="false" data-kind="BUILDING"><span class="swatch building"></span>Buildings</button>
+              <button type="button" aria-pressed="false" data-kind="ROAD"><span class="swatch road"></span>Roads</button>
+              <button type="button" aria-pressed="false" data-kind="TREE"><span class="swatch tree"></span>Trees</button>
+              <button type="button" aria-pressed="false" data-kind="POND"><span class="swatch pond"></span>Ponds</button>
+            </div>
+          </div>
+          <button id="load-assets" class="secondary load" type="button"><img src="./assets/refresh-cw.svg" alt=""> Load this area</button>
+        </div>
+        <div class="map-frame">
+          <div id="map" aria-label="Interactive OpenStreetMap map"></div>
+          <div class="map-tag"><span></span><span id="map-label">Jardin du Luxembourg</span></div>
+        </div>
+        <div class="map-footer">
+          <span id="map-status" role="status">Loading starter assets…</span>
+          <span id="coordinates" aria-label="Map center coordinates"></span>
+        </div>
+      </section>
+      <aside class="sidebar" aria-label="Asset inspector and lists">
+        <section class="side-section inspector" aria-labelledby="inspect-title">
+          <div class="eyebrow">Inspect</div>
+          <h2 id="inspect-title">Selected asset</h2>
+          <div id="asset-details">
+            <div class="empty pick-empty"><img src="./assets/mouse-pointer-2.svg" alt=""><div><strong>Pick an asset on the map</strong><p>Click a highlighted building, road, tree or pond.</p></div></div>
+          </div>
+          <label class="sr-only" for="visible-assets">Browse visible assets</label>
+          <select id="visible-assets" aria-label="Browse visible assets"><option value="">Browse visible assets</option></select>
+        </section>
+        <section class="side-section list-section" aria-labelledby="list-title">
+          <div class="eyebrow">Collect</div>
+          <div class="section-heading"><h2 id="list-title">My lists</h2><button id="new-list" class="secondary compact" type="button"><img src="./assets/plus.svg" alt=""> New list</button></div>
+          <label class="sr-only" for="active-list">Active list</label>
+          <select id="active-list" aria-label="Active list"></select>
+          <div class="list-metadata"><span id="list-count"></span><span id="storage-label">This browser</span></div>
+          <div id="list-contents"></div>
+          <p id="list-status" class="feedback" role="status"></p>
+        </section>
+      </aside>
+    </div>
+    <footer class="site-footer"><span>Nexonomy <span class="footer-dot">·</span> Map workspace</span><a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Report a map issue</a></footer>
+  </main>
+  <dialog id="list-dialog" aria-labelledby="new-list-title">
+    <form id="new-list-form">
+      <div class="dialog-header"><h2 id="new-list-title">Create a list</h2><button class="icon-button" type="button" data-close aria-label="Close"><img src="./assets/x.svg" alt=""></button></div>
+      <p>Give this group of assets a name you’ll recognize.</p>
+      <label for="list-name">List name</label>
+      <input id="list-name" required maxlength="80" autocomplete="off" autofocus placeholder="e.g. Street trees">
+      <p id="new-list-feedback" class="feedback" role="status"></p>
+      <div class="dialog-actions"><button class="secondary" type="button" data-close>Cancel</button><button class="primary" type="submit">Create list</button></div>
+    </form>
+  </dialog>
+  <dialog id="account-dialog" aria-labelledby="account-title">
+    <div class="dialog-header"><h2 id="account-title">Your workspace</h2><button class="icon-button" type="button" data-close aria-label="Close"><img src="./assets/x.svg" alt=""></button></div>
+    <p id="account-description"></p>
+    <form id="auth-form" hidden>
+      <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
+      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+      <div class="dialog-actions"><button class="secondary" type="submit" value="signUp">Create account</button><button class="primary" type="submit" value="signIn">Sign in</button></div>
+    </form>
+    <p id="account-feedback" class="feedback" role="status"></p>
+    <div id="account-actions" class="dialog-actions"></div>
+  </dialog>
+  <noscript><p class="no-script">Enable JavaScript to explore the map and save assets.</p></noscript>
+</body>
+</html>
